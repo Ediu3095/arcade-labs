@@ -1,4 +1,5 @@
 import arcade
+from random import randrange
 
 
 class MyGame(arcade.Window):
@@ -9,6 +10,7 @@ class MyGame(arcade.Window):
         self.centreY = Cy
         self.speedX = Sx
         self.speedY = Sy
+        self.framerate = 60
         self.set_update_rate(1 / 60)
         arcade.set_background_color(arcade.color.BATTLESHIP_GREY)
 
@@ -60,8 +62,10 @@ class MyGame(arcade.Window):
                                     [self.centreX + 80, self.centreY + 80]], arcade.color.BLACK)
 
         arcade.draw_rectangle_filled(self.centreX, self.centreY + 90, 120, 20, arcade.color.BLACK)
+        arcade.draw_text(str(self.framerate), 0, self.height - 25, arcade.color.YELLOW_ORANGE, 20, bold=True)
 
     def on_update(self, delta_time):
+        self.framerate = 1 // delta_time
         self.centreX = self.centreX + (self.speedX * delta_time)
         self.centreY = self.centreY + (self.speedY * delta_time)
         if self.centreX + 170 > self.width:
@@ -78,6 +82,7 @@ class MyGame(arcade.Window):
             self.speedY *= -1
 
 
-Screen = MyGame(1000, 600, "Dwarf Fortress logo", 300, 300, 200, 150)
+Screen = MyGame(randrange(600, 1200), randrange(400, 800), "Dwarf Fortress logo", 300, 300, randrange(1000),
+                randrange(1000))
 
 arcade.run()
