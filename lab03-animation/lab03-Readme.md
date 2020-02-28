@@ -5,3 +5,4 @@
 	- 3 deactivates the *FPS mode*
 - **F5:** Swaps the design of the bouncing circle
 	- 1 press will display [Samuel Jiménez Rodero](https://github.com/SJRUAH)'s design modified by [me](https://github.com/Ediu3095)
+	- 2 presses will display my design, inspired by [Dwarf Fortress](http://www.bay12games.com/dwarves/)' logo
