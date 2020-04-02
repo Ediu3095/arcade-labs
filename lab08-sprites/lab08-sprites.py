@@ -1,4 +1,4 @@
-""" Lab 7 - User Control """
+""" Lab 8 - Sprites """
 
 import arcade
 import math
@@ -16,43 +16,43 @@ class MyGame(arcade.Window):
         """ Initializer """
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Lab 7 - User Control")
         self.set_update_rate(1 / 60)
-
+        # Player sprite and score
         self.player = arcade.Sprite("Sprites/Particle.png", 1)
         self.score = 0
-
+        # Good particles variables
         self.good = arcade.SpriteList()
         self.good_max_amount = 10
         self.good_x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.good_y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
+        # Bad particles variables
         self.bad = arcade.SpriteList()
         self.bad_max_amount = 10
         self.bad_x = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         self.bad_y = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
         # Sounds
         self.good_sound = arcade.Sound("Sounds/270304__littlerobotsoundfactory__collect-point-00.wav")
         self.bad_sound = arcade.Sound("Sounds/270332__littlerobotsoundfactory__hit-03.wav")
-
-        # Background
+        # Background (I didn't add one)
         pass
-
-        # Mouse
+        # Mouse (Since we move the player with the mouse, we'll make the cursor invisible)
         self.set_mouse_visible(False)
 
     def setup(self):
+        # Create good particles
         for i in range(self.good_max_amount):
             self.good.append(arcade.Sprite("Sprites/Proton.png", 1, center_x=randrange(SCREEN_WIDTH),
                                            center_y=randrange(SCREEN_HEIGHT)))
-            self.good_x[i] = randrange(-8, 8, 1)
-            self.good_y[i] = randrange(-8, 8, 1)
+            self.good_x[i] = randrange(-4, 4, 1)
+            self.good_y[i] = randrange(-4, 4, 1)
+        # Create bad particles
         for i in range(self.bad_max_amount):
             self.bad.append(arcade.Sprite("Sprites/Electron.png", 1, center_x=randrange(SCREEN_WIDTH),
                                           center_y=randrange(SCREEN_HEIGHT)))
-            self.bad_x[i] = randrange(-8, 8, 1)
-            self.bad_y[i] = randrange(-8, 8, 1)
+            self.bad_x[i] = randrange(-4, 4, 1)
+            self.bad_y[i] = randrange(-4, 4, 1)
 
     def on_draw(self):
+        """Function to draw on screen"""
         arcade.start_render()
         self.player.draw()
         self.good.draw()
@@ -60,12 +60,14 @@ class MyGame(arcade.Window):
         arcade.draw_text("Score: " + str(self.score), 0, 0, arcade.color.WHITE, font_size=20)
 
     def on_update(self, delta_time: float):
+        """Here goes the game logic"""
         self.upd_particles()
         self.handle_collisions(self.good, self.good_x, self.good_y, self.good_sound, 1)
         self.handle_collisions(self.bad, self.bad_x, self.bad_y, self.bad_sound, -1)
 
     @staticmethod
     def pos_update(sprite: arcade.Sprite, speed_x, speed_y):
+        """Function that updates the position of a sprite WITHIN the screen"""
         # x axis
         sprite.center_x += speed_x
         if sprite.center_x >= SCREEN_WIDTH:
@@ -80,6 +82,7 @@ class MyGame(arcade.Window):
             sprite.center_y = SCREEN_HEIGHT - 1
 
     def upd_particles(self):
+        """Funcion that updates every particle"""
         i = 0
         for elem in self.good:
             self.pos_update(elem, self.good_x[i], self.good_y[i])
@@ -90,6 +93,7 @@ class MyGame(arcade.Window):
             i += 1
 
     def handle_collisions(self, s_list: arcade.SpriteList, x: list, y: list, sound: arcade.Sound, score_mod: int):
+        """Function that detects and handles collitions"""
         i = 0
         for elem in s_list:
             if elem.collides_with_sprite(self.player):
@@ -100,6 +104,7 @@ class MyGame(arcade.Window):
                 sound.play()
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
+        """Player movement"""
         self.player.center_x = x
         self.player.center_y = y
 
